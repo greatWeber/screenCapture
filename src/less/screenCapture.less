@@ -7,7 +7,40 @@
     left: 0;
     top: 0;
     z-index: 99999;
-    background: rgba(0,0,0,0.5);
+    background: transparent;
     box-sizing: border-box;
-    border: 3px solid @baseColor;
+    border: 3px solid @baseColor; 
+}
+
+.screenCapture-wrapper-show {
+    background: rgba(0,0,0,0.5);
+}
+
+.screenCapture-number-view {
+    width: 100px;
+    height: 100px;
+    border: 1px solid @baseColor;
+    transform: translate(200px,200px);
+    background: transparent;
+    position: relative;
+    
+    .screenCapture-selectbox {
+        position: absolute;
+        bottom: -35px;
+        right:0;
+        width: 210px;
+        height: 30px;
+        line-height: 30px;
+        background: #fff;
+        color: #333;
+        font-size: 12px; 
+
+        .screenCapture-w-h {
+            margin: 0 10px;
+        }
+
+        .function-close, .function-success {
+            margin: 5px 10px;
+        }
+    }
 }
