@@ -31,10 +31,10 @@
 var ui = new UI();  
 ui.initUI(1);
 ui.showMask();
-ui.showFunctionView(100,100,100,100)
+ui.showFunctionView(100,100,0,0)
 console.log(ui);
 // ================
-var drag = new Drag({
+var paint = new Painting({
     target: ui.UITarget.numberTarget,
     dragingCb: function(x,y){
         ui.setViewLayout(100,100,x,y);
@@ -42,7 +42,7 @@ var drag = new Drag({
     dragEndCb: function(){}
 });
 
-drag.initEvent();
-console.log(drag);
+paint.initDrag();
+console.log(paint);
 </script>
 </html>

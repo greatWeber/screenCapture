@@ -40,7 +40,6 @@ export default {
         return function(){
             if(!bool) return;
             bool = !bool;
-            console.log(fn);
             fn.apply(this,arguments);
             setTimeout(()=>{
                 bool = !bool;
