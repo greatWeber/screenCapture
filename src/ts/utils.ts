@@ -28,5 +28,23 @@ export default {
                 target.classList.replace(oldClass,className);
             break;
         }
+    },
+
+    /**
+     * 节流
+     * @param fn 
+     * @param time 
+     */
+    throttle(fn: Function, time: number):Function {
+        let bool = true;
+        return function(){
+            if(!bool) return;
+            bool = !bool;
+            console.log(fn);
+            fn.apply(this,arguments);
+            setTimeout(()=>{
+                bool = !bool;
+            },time)
+        }
     }
 }

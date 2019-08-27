@@ -8,7 +8,7 @@
     <link rel="stylesheet" href="../dist/css/screenCapture.css">
 </head>
 <body style="background: red;">
-<div class="screenCapture-wrapper screenCapture-wrapper-show">
+<!-- <div class="screenCapture-wrapper screenCapture-wrapper-show">
     <div class="screenCapture-number-view">
 
         <div class="screenCapture-selectbox">
@@ -23,6 +23,26 @@
             </p>
         </div>
     </div>
-</div> 
+</div>  -->
 </body>
+<script src="../dist/js/screenCapture.js"></script>
+<script>
+
+var ui = new UI();  
+ui.initUI(1);
+ui.showMask();
+ui.showFunctionView(100,100,100,100)
+console.log(ui);
+// ================
+var drag = new Drag({
+    target: ui.UITarget.numberTarget,
+    dragingCb: function(x,y){
+        ui.setViewLayout(100,100,x,y);
+    },
+    dragEndCb: function(){}
+});
+
+drag.initEvent();
+console.log(drag);
+</script>
 </html>
