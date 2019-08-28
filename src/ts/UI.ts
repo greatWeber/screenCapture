@@ -8,6 +8,7 @@ class UI {
     private selectTarget: HTMLElement; //可拖拽选择框对象
     private numberTarget: HTMLElement; //宽高数据显示区
     private functionView: HTMLElement; //功能显示区
+    private imgTarget: HTMLImageElement; //隐藏的img标签
     private uuid: number;
     constructor(){}
 
@@ -18,6 +19,7 @@ class UI {
         this.uuid = uuid;
         this.createWrapper();
         this.createSelectBox();
+        this.createHideImg();
         this.createNumberView();
     }
 
@@ -75,6 +77,18 @@ class UI {
     }
 
     /**
+     * 创建隐藏的img标签
+     */
+    private createHideImg():void {
+        this.imgTarget = document.querySelector('.sccreenCapture-hide-img');
+        if(this.imgTarget) return;
+        this.imgTarget = document.createElement('img');
+        utils.Class(this.imgTarget,'add','sccreenCapture-hide-img');
+
+        document.body.appendChild(this.imgTarget);
+    }
+
+    /**
      * 设置UITarget
      */
     public setUITarget():void{
@@ -87,7 +101,8 @@ class UI {
             captureHeight: this.numberTarget.querySelector('.screenCapture-h'),
             captureSure: this.numberTarget.querySelector('.function-success'),
             captureClose: this.numberTarget.querySelector('.function-close'),
-            captureDoodling: this.numberTarget.querySelector('.function-doodling')
+            captureDoodling: this.numberTarget.querySelector('.function-doodling'),
+            imgTarget: this.imgTarget
         }
     }
 
@@ -119,22 +134,30 @@ class UI {
          * 1. 给 numberTarget设置宽高和位置
          * 2. 显示 functionView
          * 3. 判断functionView的位置有没有超出
+         * 4. 显示宽高参数
          */
+        if(width<=0 || height<=0) return; //目前只支持左->右，上->下设置位置和宽高
+        //todo1:
         this.numberTarget.style.cssText = `
             width:${width}px;
             height: ${height}px;
             transform: translate(${x}px,${y}px);
         `;
+        // todo2:
         utils.Class(this.functionView,'add','screenCapture-selectbox-show');
+        // todo3:
         let offsetWidth: number = this.functionView.offsetWidth;
         let offsetHeight: number = this.functionView.offsetHeight;
         if(offsetWidth>x){
             this.functionView.style.left='0px';
         }
-        console.log(offsetHeight+y,this.maskTarget.offsetHeight)
+        // console.log(offsetHeight+y,this.maskTarget.offsetHeight)
         if(offsetHeight+y>=this.maskTarget.offsetHeight){
             this.functionView.style.top = '0px';
         } 
+        // todo4:
+        this.UITarget.captureWidth.innerText = width;
+        this.UITarget.captureHeight.innerText = height;
     }
 
     /**
@@ -145,10 +168,22 @@ class UI {
      * @param y 
      */
     public setViewLayout(width:number,height:number,x:number,y:number):void {
+        if(width<=0 || height<=0) return; //目前只支持左->右，上->下设置位置和宽高
         this.numberTarget.style.cssText = `
             width:${width}px;
             height: ${height}px;
             transform: translate(${x}px,${y}px);
+        `;
+    }
+
+    /**
+     * 隐藏选择框
+     */
+    public hideViewLayout(){
+        this.numberTarget.style.cssText = `
+            width:0px;
+            height: 0px;
+            transform: translate(-999px,-999px);
         `;
     }
 

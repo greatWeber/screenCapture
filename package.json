@@ -42,5 +42,7 @@
     "gulp-rename": "^1.4.0",
     "gulp-uglify": "^3.0.2"
   },
-  "dependencies": {}
+  "dependencies": {
+    "html2canvas": "^1.0.0-rc.3"
+  }
 }

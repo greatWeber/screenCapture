@@ -53,6 +53,7 @@ const Ts = function () {
     return browserify({
         basedir: '.',
         debug: true,
+        
         entries: ['src/ts/index.ts'],
         cache: {},
         packageCache: {},
@@ -61,7 +62,8 @@ const Ts = function () {
     .plugin(tsify)
     .transform('babelify', {
         presets: ['stage-0','es2015'],
-        extensions: ['.ts','.js']
+        extensions: ['.ts','.js'],
+        global:true,
     })
     .bundle()
     .pipe(plumber())

@@ -7,7 +7,7 @@
     <title>Document</title>
     <link rel="stylesheet" href="../dist/css/screenCapture.css">
 </head>
-<body style="background: red;">
+<body style="background: red;height:100vh;background:url(./wallhaven-762474.png) 0 0 no-repeat;background-size:100%,100%">
 <!-- <div class="screenCapture-wrapper screenCapture-wrapper-show">
     <div class="screenCapture-number-view">
 
@@ -25,24 +25,71 @@
     </div>
 </div>  -->
 </body>
+<script src="../lib/html2canvas.min.js"></script>
 <script src="../dist/js/screenCapture.js"></script>
 <script>
+var width=0,height=0,offsetX=0,offsetY=0;
 
 var ui = new UI();  
 ui.initUI(1);
-ui.showMask();
-ui.showFunctionView(100,100,0,0)
+// ui.showMask();
+// ui.showFunctionView(100,100,0,0)
 console.log(ui);
 // ================
-var paint = new Painting({
+var drag = new Painting({
     target: ui.UITarget.numberTarget,
     dragingCb: function(x,y){
-        ui.setViewLayout(100,100,x,y);
+        // ui.setViewLayout(100,100,x,y);
     },
     dragEndCb: function(){}
 });
 
-paint.initDrag();
-console.log(paint);
+drag.initDrag();
+// ========================= 
+
+var draw = new Painting({
+    target: ui.UITarget.maskTarget,
+    drawingCb: function(w,h,x,y){
+        width = w;
+        height = h;
+        ui.setViewLayout(width,height,x,y);
+    },
+    drawEndCb: function(x,y){
+        offsetX = x;
+        offsetY = y;
+        ui.showFunctionView(width,height,x,y);
+    }
+});
+
+draw.initDraw();
+
+// ====================
+var cn = new Canvas({
+    minHeight:ui.UITarget.maskTarget.clientHeight,
+    copy: true,
+    imgTarget: ui.UITarget.imgTarget
+});
+ui.UITarget.captureClose.addEventListener('click',function(e){
+    // debugger;
+    ui.hideMask();
+    ui.hideViewLayout();
+},false);
+
+ui.UITarget.captureSure.addEventListener('click',function(e){
+    // debugger;
+    ui.hideMask();
+    ui.hideViewLayout();
+    cn.capture({
+        width: width,
+        height: height,
+        offsetX:offsetX,
+        offsetY: offsetY,
+    })
+},false);
+// ===============
+
+
+
+
 </script>
 </html>
