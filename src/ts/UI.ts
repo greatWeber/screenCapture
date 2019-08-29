@@ -9,6 +9,8 @@ class UI {
     private numberTarget: HTMLElement; //宽高数据显示区
     private functionView: HTMLElement; //功能显示区
     private imgTarget: HTMLImageElement; //隐藏的img标签
+    private popupTarget: HTMLElement; //popup对象
+    private downloadTarget: HTMLElement; //下载用到的a标签
     private uuid: number;
     constructor(){}
 
@@ -18,8 +20,8 @@ class UI {
     public initUI(uuid:number):void{
         this.uuid = uuid;
         this.createWrapper();
-        this.createSelectBox();
-        this.createHideImg();
+        this.createPopup();
+        this.createDownload();
         this.createNumberView();
     }
 
@@ -35,16 +37,43 @@ class UI {
  
     }
 
+
     /**
-     * 创建选择框对象
+     * 创建popup弹窗
      */
-    private createSelectBox():void {
-        this.selectTarget = this.maskTarget.querySelector('.screenCapture-selectbox');
-        if(this.selectTarget) return;
-        this.selectTarget = document.createElement('div');
-        utils.Class(this.selectTarget,'add','screenCapture-selectbox');
-        this.maskTarget.appendChild(this.selectTarget);
-        
+    private createPopup():void {
+        this.popupTarget = document.querySelector('.sccreenCapture-hide-img');
+        if(this.popupTarget) return;
+        this.popupTarget = document.createElement('div');
+        this.popupTarget.className = 'screenCapture-popup flex align-center flex-center';
+        // utils.Class(this.popupTarget,'add','');
+        this.popupTarget.innerHTML = `
+        <div class="popup-wrapper ">
+            <div class="popup-header flex space-between">
+
+                <h2 class="popup-title">图片截图</h2>
+                <img class="popup-close" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABkAAAAZCAYAAADE6YVjAAAAwUlEQVRIid3VwQ3CMAyF4X+EjsAIGaGjdAPYgG4AG8Bo3YBuEC6JVCE7sZNwgCf5UMnOF7VKA/+aE3AFQsPsBJzTGmoC8AJiqsUBmGe3Q5MH+gRiehazC0gNkoCY1hKzKIgGaUD1DVihZsAKdQMWaAhggYYAHqgLyFkLwHMEUPrIuW7fBnI9RgPan8EF1c5B6IWsB60Z8p7kErRqyOYALJB48UnNJaAGichyaNiNgAbdS80zcKFyTyuZ0sbmhtkfyRtSZ9VFfwHZEgAAAABJRU5ErkJggg==" alt="">
+            </div>
+            <img src="" alt="截图" class="popup-content-img">
+            <div class="popup-footer flex space-between align-center">
+                <p class="popup-tip">tips: 右击图片选择复制图像，可以拷贝到微信和QQ软件中 ^.^</p>
+                <button class="popup-download">download</button>
+            </div>
+        </div>
+        `;
+
+        document.body.appendChild(this.popupTarget);
+    }
+
+    /**
+     * 创建下载需要用到的标签
+     */
+    private createDownload():void{
+        this.downloadTarget = document.querySelector('.screenCapture-download-href');
+        if(this.downloadTarget) return;
+        this.downloadTarget = document.createElement('a');
+        utils.Class(this.downloadTarget,'add','screenCapture-download-href');
+        document.body.appendChild(this.downloadTarget);
     }
 
     /**
@@ -77,18 +106,6 @@ class UI {
     }
 
     /**
-     * 创建隐藏的img标签
-     */
-    private createHideImg():void {
-        this.imgTarget = document.querySelector('.sccreenCapture-hide-img');
-        if(this.imgTarget) return;
-        this.imgTarget = document.createElement('img');
-        utils.Class(this.imgTarget,'add','sccreenCapture-hide-img');
-
-        document.body.appendChild(this.imgTarget);
-    }
-
-    /**
      * 设置UITarget
      */
     public setUITarget():void{
@@ -102,7 +119,8 @@ class UI {
             captureSure: this.numberTarget.querySelector('.function-success'),
             captureClose: this.numberTarget.querySelector('.function-close'),
             captureDoodling: this.numberTarget.querySelector('.function-doodling'),
-            imgTarget: this.imgTarget
+            imgTarget: this.popupTarget.querySelector('.popup-content-img'), 
+            downloadTarget: this.downloadTarget, 
         }
     }
 
@@ -185,7 +203,10 @@ class UI {
             height: 0px;
             transform: translate(-999px,-999px);
         `;
+        utils.Class(this.functionView,'del','screenCapture-selectbox-show');
     }
+
+     
 
 
 }

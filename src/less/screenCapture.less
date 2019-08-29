@@ -41,6 +41,7 @@
         color: #333;
         font-size: 12px; 
         display: none;
+        cursor: pointer; 
 
         .screenCapture-w-h {
             margin: 0 10px;
@@ -52,8 +53,58 @@
     }
 }
 
-.sccreenCapture-hide-img {
-    // opacity: 0;
-    // position: absolute;
-    // z-index: -1;
+.screenCapture-popup {
+    position: fixed;
+    left: 0;
+    top: 0;
+    z-index: 999;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(0,0,0,0.3);
+    opacity: 0;
+    display: none; 
+    
+    .popup-wrapper {
+        width: 600px;
+        height: auto;
+        box-sizing: border-box;
+        background: #fff;
+        border-radius: 10px;
+    }
+    .popup-header {
+        line-height: 50px;
+        border-bottom: 1px solid #eee;
+        font-size: 16px;
+        padding: 0 20px;
+
+        .popup-close {
+            width: 25px;
+            height: 25px;
+            margin-top: 12.5px;
+        }
+    }
+
+    .popup-content-img {
+        max-width: 600px;
+        height: auto;
+        margin: 20px auto;
+    }
+
+    .popup-footer {
+        border-top: 1px solid #eee;
+        line-height: 50px;
+        font-size: 14px;
+        color: #999;
+        padding: 0 20px;
+
+        .popup-download {
+            width: 80px;
+            height: 30px;
+            background: #13d613;
+            color: #fff;
+            border-radius: 15px;
+            border: none;
+            outline: none;
+        }
+    }
 }

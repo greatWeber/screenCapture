@@ -45,5 +45,14 @@ export default {
                 bool = !bool;
             },time)
         }
+    },
+
+    uuid:uuid()
+}
+
+function uuid(){
+    let id = 1;
+    return ()=>{
+        return id++;
     }
 }

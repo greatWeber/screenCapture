@@ -5,10 +5,10 @@ import utils from "./utils";
  */
 interface params {
     target: HTMLElement,
-    dragingCb: Function,
-    dragEndCb: Function,
-    drawingCb: Function,
-    drawEndCb: Function,
+    dragingCb?: Function,
+    dragEndCb?: Function,
+    drawingCb?: Function,
+    drawEndCb?: Function, 
 }
 class Painting {
     private target: HTMLElement; //绘画的对象

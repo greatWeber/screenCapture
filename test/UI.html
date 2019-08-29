@@ -24,6 +24,22 @@
         </div>
     </div>
 </div>  -->
+
+<!-- <div class="screenCapture-popup flex align-center flex-center">
+    <div class="popup-wrapper ">
+        <div class="popup-header flex space-between">
+
+            <h2 class="popup-title">图片截图</h2>
+            <img class="popup-close" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABkAAAAZCAYAAADE6YVjAAAAwUlEQVRIid3VwQ3CMAyF4X+EjsAIGaGjdAPYgG4AG8Bo3YBuEC6JVCE7sZNwgCf5UMnOF7VKA/+aE3AFQsPsBJzTGmoC8AJiqsUBmGe3Q5MH+gRiehazC0gNkoCY1hKzKIgGaUD1DVihZsAKdQMWaAhggYYAHqgLyFkLwHMEUPrIuW7fBnI9RgPan8EF1c5B6IWsB60Z8p7kErRqyOYALJB48UnNJaAGichyaNiNgAbdS80zcKFyTyuZ0sbmhtkfyRtSZ9VFfwHZEgAAAABJRU5ErkJggg==" alt="">
+        </div>
+        <img src="" alt="截图" class="popup-content-img">
+        <div class="popup-footer flex space-between align-center">
+            <p class="popup-tip">tips: 右击图片选择复制图像，可以拷贝到微信和QQ软件中 ^.^</p>
+            <button class="popup-download">download</button>
+        </div>
+    </div>
+</div> -->
+
 </body>
 <script src="../lib/html2canvas.min.js"></script>
 <script src="../dist/js/screenCapture.js"></script>
@@ -66,8 +82,8 @@ draw.initDraw();
 // ====================
 var cn = new Canvas({
     minHeight:ui.UITarget.maskTarget.clientHeight,
-    copy: true,
-    imgTarget: ui.UITarget.imgTarget
+    copyType: 'download',
+    UITarget: ui.UITarget 
 });
 ui.UITarget.captureClose.addEventListener('click',function(e){
     // debugger;
@@ -88,7 +104,27 @@ ui.UITarget.captureSure.addEventListener('click',function(e){
 },false);
 // ===============
 
+// window.frames['imgIframe'].document.execCommand('SaveAs');
+// function down(src){
+//     var a = document.createElement('a');
+//     a.href=src;
+//     a.download = new Date().getTime()+'.jpg';
+//     document.body.appendChild(a);
+    
+// }
 
+// down('https://w.wallhaven.cc/full/13/wallhaven-13gom9.jpg')
+
+document.onkeydown = function(e){
+    console.log(e);
+    e.preventDefault();
+    var ctrl = e.ctrlKey || e.metaKey;
+    var keyCode = e.keyCode ||e.which || e.charCode;
+    if(ctrl&&keyCode == 66){
+        // ctrl+b
+        ui.showMask();
+    }
+}
 
 
 </script>

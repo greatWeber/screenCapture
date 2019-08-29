@@ -11,8 +11,8 @@ interface sizeInfo {
 
 interface params {
     minHeight: number,
-    copy: Boolean, //裁剪后是否复制到剪贴板
-    imgTarget: HTMLImageElement
+    copyType: string, //裁剪后的类型操作: all=弹窗；_blank=新窗口打开；download=直接下载
+    UITarget: any
 }
 //  import html2canvas from '../../node_modules/html2canvas/dist/types/index';
 //  import html2canvas from 'html2canvas';
@@ -71,29 +71,50 @@ const html2canvas = (window as any).html2canvas
             this.canvas.width = size.width;
             this.canvas.height = size.height;
             ctx.drawImage(image,size.offsetX,size.offsetY,size.width,size.height,0,0,size.width,size.height);
-            let imgData = this.canvas.toDataURL();
-            console.log(imgData);
-            if(!this.params.copy){
-                let windowImage = new Image();
-                windowImage.src = imgData;
-                const newWindow = window.open('','_blank'); //直接新窗口打开
-                newWindow.document.write(windowImage.outerHTML);
-            }else{
-                this.copying(imgData);
-            }
+
+            this.copySwitch(); 
+        }
+    }
+    /**
+     * 保存的方式
+     */
+    private copySwitch():void{
+        console.log(this.params.copyType);
+        switch(this.params.copyType){
+            case 'all':
+            break;
+            case '_blank':
+                this.blankCopy();
+            break;
+            case 'download':
+                this.downloadCopy();
+            break;
+
         }
     }
 
-    private copying(imgData: string):void {
-        this.params.imgTarget.src=imgData;
-        let selection = (window as any).getSelection(); 
-        let range = document.createRange();
-        range.selectNode(this.params.imgTarget);
-        selection.removeAllRanges();
-        selection.addRange(range);
-        document.execCommand('copy');
-        console.log(selection);
+    /**
+     * 新窗口打开
+     */
+    private blankCopy():void{
+
+        let windowImage = new Image();
+        windowImage.src = this.canvas.toDataURL();
+        const newWindow = window.open('','_blank'); //直接新窗口打开
+        newWindow.document.write(windowImage.outerHTML);
     }
+
+    /**
+     * 直接下载
+     */
+    public downloadCopy():void{
+        let downloadTarget = this.params.UITarget.downloadTarget;
+        downloadTarget.href = this.canvas.toDataURL();
+        downloadTarget.download = new Date().getTime() +'.png';
+        downloadTarget.click();
+    }
+
+    
  }
 
  export default Canvas;
