@@ -10,7 +10,8 @@ import utils from './utils';
 // 配置参数
 interface options {
     copyType?: string,
-    keyCode?: number|string
+    keyCode?: number|string,
+    fkeyCode?: number|string,
 }
 
 export default class ScreenCapture {
@@ -28,7 +29,8 @@ export default class ScreenCapture {
     constructor(options:options){
         this.options = Object.assign({
             copyType: 'all',
-            keyCode: 66
+            keyCode: 66, //b
+            fkeyCode: 77, //m
         },options) ; 
     }
 
@@ -56,6 +58,8 @@ export default class ScreenCapture {
      * 初始化拖拽实例
      */
     private initDrag():void {
+        this.dragingCb = this.dragingCb.bind(this);
+        this.dragEndCb = this.dragEndCb.bind(this);
         this.DragInstance = new Painting({
             target: this.UIInstance.UITarget.numberTarget,
             dragingCb: this.dragingCb,
@@ -74,8 +78,10 @@ export default class ScreenCapture {
     /**
      * 拖拽结束后的回调 
      */
-    private dragEndCb():void {
-
+    private dragEndCb(x:number,y:number):void {
+        this.offsetX = x;
+        this.offsetY = y;
+        this.UIInstance.showFunctionView(this.width,this.height,x,y);
     }
 
     /**
@@ -108,6 +114,15 @@ export default class ScreenCapture {
         this.offsetX = x;
         this.offsetY = y;
         this.UIInstance.showFunctionView(this.width,this.height,x,y);
+
+        this.DragInstance.setScreenSize({
+            width: this.width,
+            height: this.height,  
+            clientW: this.UIInstance.UITarget.maskTarget.clientWidth,
+            clientH: this.UIInstance.UITarget.maskTarget.clientHeight,
+            offsetX: x,
+            offsetY: y
+        })
     }
 
     /**
@@ -117,7 +132,8 @@ export default class ScreenCapture {
         this.CanvasInstance = new Canvas({
             minHeight: this.UIInstance.UITarget.maskTarget.clientHeight,
             copyType: this.options.copyType,
-            UITarget: this.UIInstance.UITarget
+            UITarget: this.UIInstance.UITarget,
+            UI: this.UIInstance
         })
     }
 
@@ -129,6 +145,9 @@ export default class ScreenCapture {
         this.keydownHandler();
         this.captureSureHandler();
         this.captureCloseHandler();
+        this.stopMouseDown();
+        this.closePopupHandler();
+        this.popupDownloadHandler();
     }
 
     /**
@@ -136,16 +155,64 @@ export default class ScreenCapture {
      */
     private keydownHandler():void{
         document.addEventListener('keydown',(e)=>{
-            console.log(this.options);
+            console.log(e);
             
             let ctrl = e.ctrlKey || e.metaKey;
             let keyCode = e.keyCode ||e.which || e.charCode;
-            if(ctrl&&keyCode == this.options.keyCode){
-                // 显示蒙层
-                e.preventDefault();
-                this.UIInstance.showMask();
-            }
+            this.normalScreenCapture(ctrl,keyCode,e);
+            this.fullScreenCapture(ctrl,keyCode,e);
+            this.stopScreenCapture(keyCode,e);
         },false)
+    }
+
+    /**
+     * 普通的截图
+     * @param ctrl 
+     * @param keyCode 
+     * @param e 
+     */
+    private normalScreenCapture(ctrl: boolean, keyCode: number,e:any):void{
+        // ctrl+b
+        if(ctrl&&keyCode == this.options.keyCode){
+            // 显示蒙层
+            e.preventDefault();
+            this.UIInstance.showMask();
+        }
+    }
+
+    /**
+     * 全屏截图
+     * @param ctrl 
+     * @param keyCode 
+     * @param e 
+     */
+    private fullScreenCapture(ctrl: boolean, keyCode: number,e:any):void {
+        // ctrl+n
+        if(ctrl&&keyCode == this.options.fkeyCode){
+            // 显示蒙层
+            e.preventDefault();
+            this.CanvasInstance.capture({
+                width: document.body.clientWidth,
+                height: document.body.clientHeight,
+                offsetX:0,
+                offsetY: 0
+            })
+        }
+    }
+
+    /**
+     * 停止截图
+     * @param keyCode 
+     * @param e 
+     */
+    private stopScreenCapture(keyCode:number,e:any):void {
+        if(keyCode == 27) {
+            e.stopPropagation();
+            this.UIInstance.hidePopup();
+            this.UIInstance.hideMask();
+            this.UIInstance.hideViewLayout();
+
+        }
     }
 
     /**
@@ -169,9 +236,45 @@ export default class ScreenCapture {
      */
     private captureCloseHandler():void {
         this.UIInstance.UITarget.captureClose.addEventListener('click',(e)=>{
+            e.stopPropagation();
             this.UIInstance.hideMask();
             this.UIInstance.hideViewLayout();
+        },false);
+
+    }
+
+    /**
+     * 这里添加一个mousedown，是为了阻止触发父级的mousedown事件
+     */
+    private stopMouseDown():void {
+        this.UIInstance.UITarget.functionView.addEventListener('mousedown',(e)=>{
+            e.stopPropagation();
+            return false;
         },false)
+    }
+
+    /**
+     * 点击关闭弹窗
+     */
+    private closePopupHandler():void {
+        this.UIInstance.UITarget.popupCloseTarget.addEventListener('click',(e)=>{
+            this.UIInstance.hidePopup();
+            this.UIInstance.hideMask();
+            this.UIInstance.hideViewLayout();
+        })
+    }
+
+    /**
+     * 弹窗点击下载
+     */
+    private popupDownloadHandler():void {
+        this.UIInstance.UITarget.popupDownloadTarget.addEventListener('click',(e)=>{
+
+            this.CanvasInstance.downloadCopy();
+            this.UIInstance.hidePopup();
+            this.UIInstance.hideMask();
+            this.UIInstance.hideViewLayout();
+        })
     }
 
 

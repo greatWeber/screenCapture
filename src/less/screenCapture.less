@@ -11,20 +11,22 @@
     box-sizing: border-box;
     border: 3px solid @baseColor; 
     display: none;
+    overflow: hidden;
 }
 
 .screenCapture-wrapper-show {
-    background: rgba(0,0,0,0.5);
+    // background: rgba(0,0,0,0.5);
     display: block;
 }
 
 .screenCapture-number-view {
     width: 0px;
     height: 0px;
-    border: 1px solid @baseColor;
-    transform: translate(200px,200px);
+    border: 10000px solid rgba(0,0,0,0.5);
+    transform: translate(-100000px,-100000px);
     background: transparent;
     position: relative;
+    margin: -10000px;
   
     .screenCapture-selectbox-show { 
         display: block !important;
@@ -50,7 +52,16 @@
         .function-close, .function-success {
             margin: 5px 10px;
         }
+
+        .function-doodling {
+            cursor: move;
+        }
     }
+}
+
+.screenCapture-popup-show {
+    opacity: 1 !important;
+    
 }
 
 .screenCapture-popup {
@@ -63,6 +74,7 @@
     background: rgba(0,0,0,0.3);
     opacity: 0;
     display: none; 
+    transition: opacity 0.3s linear;
     
     .popup-wrapper {
         width: 600px;
@@ -87,7 +99,9 @@
     .popup-content-img {
         max-width: 600px;
         height: auto;
-        margin: 20px auto;
+        margin: 20px 0;
+        margin-left: 50%;
+        transform: translateX(-50%);
     }
 
     .popup-footer {
@@ -100,7 +114,7 @@
         .popup-download {
             width: 80px;
             height: 30px;
-            background: #13d613;
+            background: @baseColor;
             color: #fff;
             border-radius: 15px;
             border: none;

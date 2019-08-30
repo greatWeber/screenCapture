@@ -10,6 +10,15 @@ interface params {
     drawingCb?: Function,
     drawEndCb?: Function, 
 }
+
+interface size {
+    width?: number,
+    height?: number,
+    clientW?: number,
+    clientH?: number,
+    offsetX?: number,
+    offsetY?: number
+}
 class Painting {
     private target: HTMLElement; //绘画的对象
     private dragingCb: Function; //拖拽中的回调
@@ -24,6 +33,8 @@ class Painting {
     private lastY: number = 0;
     private rangeX: number = 0;
     private rangeY: number = 0;
+
+    private size: size ;
 
     private _dragStartHandler: EventListenerOrEventListenerObject;
     private _dragingHandler: EventListenerOrEventListenerObject;
@@ -49,6 +60,24 @@ class Painting {
         this.onDragStart();
     }
 
+    /**
+     * 获取绘画后的几何信息，用于边界判断
+     * @param size 几何信息
+     */
+    public setScreenSize(size: size):void{
+        this.size = Object.assign({
+            width:0,
+            height:0,
+            clientW: document.body.clientWidth,
+            clientH: document.body.clientHeight,
+            offsetX: 0,
+            offsetY: 0
+        },size);
+        this.lastX = this.size.offsetX;
+        this.lastY = this.size.offsetY; 
+        console.log('size',this.size);
+    }
+
     private setCursor(attr: string){
         this.target.style.cursor = attr;
     }
@@ -65,13 +94,14 @@ class Painting {
 
     private dragStartHandler():void {
         console.log(arguments);
-        let e: any = arguments[0];
+        let e: any = arguments[0]; 
         e.stopPropagation();
         this.setCursor('move');
         this.startX = e.clientX;
         this.startY = e.clientY;
         this.onDraging();
         this.onDragEnd();
+        console.log(this.lastX, this.lastY);
     } 
 
     /**
@@ -91,6 +121,21 @@ class Painting {
         let throttleCb :Function = utils.throttle(this.dragingCb,10);
         this.rangeX = e.clientX - this.startX + this.lastX;
         this.rangeY = e.clientY - this.startY + this.lastY;
+        // console.log(this.rangeX+this.size.width,this.rangeY+this.size.height)
+        //  边界判断
+        if(this.rangeX<0){
+            this.rangeX=0;
+        }
+        if(this.rangeX+this.size.width>this.size.clientW+document.body.offsetLeft){
+            this.rangeX = this.size.clientW+document.body.offsetLeft-this.size.width;
+        }
+
+        if(this.rangeY<0){
+            this.rangeY = 0;
+        }
+        if(this.rangeY+this.size.height>this.size.clientH+document.body.offsetTop){
+            this.rangeY = this.size.clientH+document.body.offsetTop-this.size.height;
+        }
         throttleCb(this.rangeX,this.rangeY);
     }
 
@@ -110,7 +155,7 @@ class Painting {
         this.lastY = this.rangeY;
         this.target.removeEventListener('mousemove',this._dragingHandler,false);
         this.target.removeEventListener('mouseup',this._dragEndHandler,false);
-        this.dragEndCb();
+        this.dragEndCb(this.rangeX,this.rangeY);
     }
 
     // ========================================

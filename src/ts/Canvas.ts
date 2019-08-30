@@ -12,7 +12,8 @@ interface sizeInfo {
 interface params {
     minHeight: number,
     copyType: string, //裁剪后的类型操作: all=弹窗；_blank=新窗口打开；download=直接下载
-    UITarget: any
+    UITarget: any,
+    UI: any
 }
 //  import html2canvas from '../../node_modules/html2canvas/dist/types/index';
 //  import html2canvas from 'html2canvas';
@@ -51,8 +52,8 @@ const html2canvas = (window as any).html2canvas
         }).then(canvas=>{
             this.canvas = canvas;
             // document.body.appendChild(canvas);
-            let imgData = this.canvas.toDataURL();
-
+            let imgData = this.canvas.toDataURL('image/jpeg', 0.5);
+            // console.log(imgData);
             // todo3:
             this.drawImage(imgData);
         })
@@ -63,6 +64,7 @@ const html2canvas = (window as any).html2canvas
      * @param img 
      */
     private drawImage(img: string):void {
+        console.log('size',this.size)
         let ctx = this.canvas.getContext('2d');
         let size = this.size;
         let image = new Image();
@@ -82,6 +84,7 @@ const html2canvas = (window as any).html2canvas
         console.log(this.params.copyType);
         switch(this.params.copyType){
             case 'all':
+                this.popupCopy();
             break;
             case '_blank':
                 this.blankCopy();
@@ -99,7 +102,7 @@ const html2canvas = (window as any).html2canvas
     private blankCopy():void{
 
         let windowImage = new Image();
-        windowImage.src = this.canvas.toDataURL();
+        windowImage.src = this.canvas.toDataURL('image/jpeg', 0.5);
         const newWindow = window.open('','_blank'); //直接新窗口打开
         newWindow.document.write(windowImage.outerHTML);
     }
@@ -109,9 +112,17 @@ const html2canvas = (window as any).html2canvas
      */
     public downloadCopy():void{
         let downloadTarget = this.params.UITarget.downloadTarget;
-        downloadTarget.href = this.canvas.toDataURL();
-        downloadTarget.download = new Date().getTime() +'.png';
+        downloadTarget.href = this.canvas.toDataURL('image/jpeg', 0.5);
+        downloadTarget.download = new Date().getTime() +'.jpg';
         downloadTarget.click();
+    }
+
+    /**
+     * 弹窗下载
+     */
+    public popupCopy():void {
+        this.params.UITarget.imgTarget.src = this.canvas.toDataURL('image/jpeg', 0.5);
+        this.params.UI.showPopup();
     }
 
     

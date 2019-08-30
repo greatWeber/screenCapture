@@ -121,6 +121,8 @@ class UI {
             captureDoodling: this.numberTarget.querySelector('.function-doodling'),
             imgTarget: this.popupTarget.querySelector('.popup-content-img'), 
             downloadTarget: this.downloadTarget, 
+            popupCloseTarget: this.popupTarget.querySelector('.popup-close'),
+            popupDownloadTarget: this.popupTarget.querySelector('.popup-download'),
         }
     }
 
@@ -168,11 +170,16 @@ class UI {
         let offsetHeight: number = this.functionView.offsetHeight;
         if(offsetWidth>x){
             this.functionView.style.left='0px';
+        }else{
+            this.functionView.style.left='none';
         }
-        // console.log(offsetHeight+y,this.maskTarget.offsetHeight)
-        if(offsetHeight+y>=this.maskTarget.offsetHeight){
+        console.log(offsetHeight+y+height,this.maskTarget.offsetHeight)
+        if(offsetHeight+y+height>=this.maskTarget.offsetHeight){
+            
             this.functionView.style.top = '0px';
-        } 
+        }else{
+            this.functionView.style.top=height+'px';
+        }
         // todo4:
         this.UITarget.captureWidth.innerText = width;
         this.UITarget.captureHeight.innerText = height;
@@ -201,9 +208,29 @@ class UI {
         this.numberTarget.style.cssText = `
             width:0px;
             height: 0px;
-            transform: translate(-999px,-999px);
+            transform: translate(-100000px,-100000px); 
         `;
         utils.Class(this.functionView,'del','screenCapture-selectbox-show');
+    }
+
+    /**
+     * 显示弹窗
+     */
+    public showPopup():void {
+        this.popupTarget.style.display = 'flex';
+        setTimeout(()=>{
+            utils.Class(this.popupTarget,'add','screenCapture-popup-show');
+        },50)
+    }
+
+    /**
+     * 隐藏弹窗
+     */
+    public hidePopup():void {
+        utils.Class(this.popupTarget,'del','screenCapture-popup-show');
+        setTimeout(()=>{
+            this.popupTarget.style.display = 'none';
+        },500)
     }
 
      
