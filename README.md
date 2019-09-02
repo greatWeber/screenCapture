@@ -8,7 +8,6 @@
 npm i web_screencapture
 // 或者
 npm install web_screencapture -i
-// 或者
 
 ```
 
@@ -24,7 +23,7 @@ sc.init();
 
 
 ```
-> 键盘按下`ctrl+b`开始截图；`ctrl+m`全屏截图
+> 键盘按下`ctrl+b`开始截图；`ctrl+m`全屏截图；`esc`退出截图
 
 ## options
 > 初始化构建函数的参数如下：
