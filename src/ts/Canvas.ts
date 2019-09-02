@@ -16,8 +16,10 @@ interface params {
     UI: any
 }
 //  import html2canvas from '../../node_modules/html2canvas/dist/types/index';
-//  import html2canvas from 'html2canvas';
-const html2canvas = (window as any).html2canvas
+//  import html2canvas from 'html2canvas'; 
+// const html2canvas = (window as any).html2canvas
+
+const html2canvas = require('html2canvas');
  console.log(html2canvas);   
 
  class Canvas {

@@ -1,9 +1,14 @@
 {
-    "files": [
-        "src/ts/**.ts"
+    "include": [
+        "./src/ts/**.ts"
     ],
     "compilerOptions": {
         "noImplicitAny": false,
-        "target": "es2015"
+        "target": "es2015",
+        "sourceMap": true,
+        "module": "amd",
+        "allowJs": true,
+        "removeComments": true,
+        "outDir": "./dist/"
     }
 }
