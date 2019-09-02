@@ -51,6 +51,8 @@ const html2canvas = require('html2canvas');
         html2canvas(document.body,{
             width: document.body.clientWidth,
             height: document.body.clientHeight,
+            useCORS:true, //允许图片跨域
+            allowTaint:false
         }).then(canvas=>{
             this.canvas = canvas;
             // document.body.appendChild(canvas);

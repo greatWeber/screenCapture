@@ -1,8 +1,17 @@
 {
-  "name": "screencapture",
-  "version": "1.0.0",
+  "name": "web_screencapture",
+  "version": "1.0.1",
   "description": "the screen capture of web",
-  "main": "index.js",
+  "main": "dist/screenCapture.js",
+  "module": "dist/screenCapture.js",
+  "typings":"types/index.d.ts",
+  "files": [
+    "dist/**",
+    "types/*.d.ts"
+  ],
+  "keywords":[
+    "screencapture"
+  ],
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "webpack --config webpack.config.js",
@@ -12,7 +21,7 @@
     "type": "git",
     "url": "git+https://github.com/greatWeber/screenCapture.git"
   },
-  "author": "",
+  "author": "hero_666",
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/greatWeber/screenCapture/issues"

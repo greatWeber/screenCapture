@@ -6,14 +6,24 @@
 
  const TsconfigPathsPlugin = require('tsconfig-paths-webpack-plugin');
 
+ const { CleanWebpackPlugin } = require('clean-webpack-plugin');
+
  module.exports = {
      entry: './src/ts/index.ts',
      output: {
          path: path.resolve(__dirname,'dist'),
-         filename: 'screenCapture.js'
+         filename: 'screenCapture.js',
+         library:{
+            root: "ScreenCapture",
+            amd: "ScreenCapture",
+            commonjs: "ScreenCapture"
+          },
+        libraryTarget: 'umd',
+        umdNamedDefine: true,
+        libraryExport: "default"
      },
      mode:'production',
-     devtool: 'inline-source-map',
+    //  devtool: 'inline-source-map',
      module: {
          rules: [
             { 
@@ -46,6 +56,6 @@
         modules: [path.resolve(__dirname, "src"), "node_modules"]
     },
     plugins: [
-        // new TsconfigPathsPlugin({ configFile: './tsconfig.json'  })
+        new CleanWebpackPlugin(),
     ]
  }

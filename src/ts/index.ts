@@ -9,5 +9,5 @@ import '../less/screenCapture.less';
 // (window as any).Painting = Painting;
 // (window as any).Canvas = Canvas;
 // (window as any).ScreenCapture = ScreenCapture;
-export default ScreenCapture; 
-// export default UI; 
+export default ScreenCapture;    
+// export default UI;  

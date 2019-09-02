@@ -61,7 +61,7 @@
         modules: [path.resolve(__dirname, "src"), "node_modules"]
       },
       plugins: [
-        new CleanWebpackPlugin(),
+        // new CleanWebpackPlugin(),
         new HtmlWebpackPlugin({
             template:'index.html',
             inject: 'body'
