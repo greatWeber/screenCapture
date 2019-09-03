@@ -155,7 +155,7 @@ export default class ScreenCapture {
      */
     private keydownHandler():void{
         document.addEventListener('keydown',(e)=>{
-            console.log(e);
+            // console.log(e);
             
             let ctrl = e.ctrlKey || e.metaKey;
             let keyCode = e.keyCode ||e.which || e.charCode;

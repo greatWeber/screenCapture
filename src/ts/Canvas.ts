@@ -20,7 +20,7 @@ interface params {
 // const html2canvas = (window as any).html2canvas
 
 const html2canvas = require('html2canvas');
- console.log(html2canvas);   
+//  console.log(html2canvas);   
 
  class Canvas {
     private params: params; 
@@ -56,7 +56,7 @@ const html2canvas = require('html2canvas');
         }).then(canvas=>{
             this.canvas = canvas;
             // document.body.appendChild(canvas);
-            let imgData = this.canvas.toDataURL('image/jpeg', 0.5);
+            let imgData = this.canvas.toDataURL('image/jpeg', 0.7);
             // console.log(imgData);
             // todo3:
             this.drawImage(imgData);
@@ -68,7 +68,7 @@ const html2canvas = require('html2canvas');
      * @param img 
      */
     private drawImage(img: string):void {
-        console.log('size',this.size)
+        // console.log('size',this.size)
         let ctx = this.canvas.getContext('2d');
         let size = this.size;
         let image = new Image();
@@ -85,7 +85,7 @@ const html2canvas = require('html2canvas');
      * 保存的方式
      */
     private copySwitch():void{
-        console.log(this.params.copyType);
+        // console.log(this.params.copyType);
         switch(this.params.copyType){
             case 'all':
                 this.popupCopy();
@@ -106,7 +106,7 @@ const html2canvas = require('html2canvas');
     private blankCopy():void{
 
         let windowImage = new Image();
-        windowImage.src = this.canvas.toDataURL('image/jpeg', 0.5);
+        windowImage.src = this.canvas.toDataURL('image/jpeg', 0.7);
         const newWindow = window.open('','_blank'); //直接新窗口打开
         newWindow.document.write(windowImage.outerHTML);
     }
@@ -116,7 +116,7 @@ const html2canvas = require('html2canvas');
      */
     public downloadCopy():void{
         let downloadTarget = this.params.UITarget.downloadTarget;
-        downloadTarget.href = this.canvas.toDataURL('image/jpeg', 0.5);
+        downloadTarget.href = this.canvas.toDataURL('image/jpeg', 0.7);
         downloadTarget.download = new Date().getTime() +'.jpg';
         downloadTarget.click();
     }
@@ -125,7 +125,7 @@ const html2canvas = require('html2canvas');
      * 弹窗下载
      */
     public popupCopy():void {
-        this.params.UITarget.imgTarget.src = this.canvas.toDataURL('image/jpeg', 0.5);
+        this.params.UITarget.imgTarget.src = this.canvas.toDataURL('image/jpeg', 0.7);
         this.params.UI.showPopup();
     }
 

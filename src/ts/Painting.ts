@@ -75,7 +75,7 @@ class Painting {
         },size);
         this.lastX = this.size.offsetX;
         this.lastY = this.size.offsetY; 
-        console.log('size',this.size);
+        // console.log('size',this.size);
     }
 
     private setCursor(attr: string){
@@ -93,7 +93,7 @@ class Painting {
     }
 
     private dragStartHandler():void {
-        console.log(arguments);
+        // console.log(arguments);
         let e: any = arguments[0]; 
         e.stopPropagation();
         this.setCursor('move');
@@ -101,7 +101,7 @@ class Painting {
         this.startY = e.clientY;
         this.onDraging();
         this.onDragEnd();
-        console.log(this.lastX, this.lastY);
+        // console.log(this.lastX, this.lastY);
     } 
 
     /**

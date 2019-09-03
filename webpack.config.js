@@ -8,6 +8,8 @@
 
  const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 
+ const webpack = require('webpack');
+
  module.exports = {
      entry: './src/ts/index.ts',
      output: {
@@ -23,6 +25,9 @@
         libraryExport: "default"
      },
      mode:'production',
+     optimization: {
+        minimize: true
+      },
     //  devtool: 'inline-source-map',
      module: {
          rules: [

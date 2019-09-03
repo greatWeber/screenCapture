@@ -173,7 +173,7 @@ class UI {
         }else{
             this.functionView.style.left='none';
         }
-        console.log(offsetHeight+y+height,this.maskTarget.offsetHeight)
+        // console.log(offsetHeight+y+height,this.maskTarget.offsetHeight)
         if(offsetHeight+y+height>=this.maskTarget.offsetHeight){
             
             this.functionView.style.top = '0px';
